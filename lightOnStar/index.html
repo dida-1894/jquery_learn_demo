@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="./jquery.min.js" charset="utf-8"></script>
+  <title>Document</title>
+  <style media="screen">
+    .rating{
+      width: 160px;
+      height: 32px;
+      margin: 0 auto;
+    }
+    .item{
+      width: 32px;
+      height: 32px;
+      float: left;
+      list-style-type: none;
+      background-image: url(./star.png);
+      background-position: 0px 0px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <ul id="rating" class="rating">
+    <li class="item" title="terrible"></li>
+    <li class="item" title="bad"></li>
+    <li class="item" title="just so so"></li>
+    <li class="item" title="good"></li>
+    <li class="item" title="great"></li>
+  </ul>
+
+  <ul id="ratingS" class="rating">
+    <li class="item" title="terrible"></li>
+    <li class="item" title="bad"></li>
+    <li class="item" title="just so so"></li>
+    <li class="item" title="good"></li>
+    <li class="item" title="great"></li>
+  </ul>
+
+</body>
+<script type="text/javascript">
+    var rating=(function(){
+
+      function lightOn($item,num){
+        $item.each(function(index,value){
+          if(index<num){
+            $item.eq(index).css("background-position","0px 64px");
+          }else {
+            $item.eq(index).css("background-position","0px 0px");
+          }
+        });
+      }
+
+      function init(el,num){
+        var $rating=$(el),
+            $item=$rating.find(".item");
+
+            $rating.on("mouseover",".item",function(){
+              lightOn($item,$(this).index()+1);
+            }).on("click",".item",function(){
+              num=$(this).index()+1;
+              lightOn($item,num);
+            }).on("mouseout",function(){
+              lightOn($item,num);
+            });
+
+            lightOn($item,num);
+      }
+
+      $.fn.extend({
+        ratingS:function(num){
+          return this.each(function(){
+            init(this,num);
+          });
+        }
+      });
+
+      return {
+        init:init
+      }
+
+    })()
+
+    rating.init("#rating",1);
+    $("#ratingS").ratingS(2);
+</script>
+</html>
